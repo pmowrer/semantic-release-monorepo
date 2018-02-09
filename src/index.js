@@ -1,5 +1,6 @@
-const { compose } = require('ramda');
+const { compose, composeP, unless } = require('ramda');
 const pluginDefinitions = require('semantic-release/lib/plugins/definitions');
+const { writeLastRunHead } = require('./last-run-file');
 const withOnlyPackageCommits = require('./only-package-commits');
 const versionToGitTag = require('./version-to-git-tag');
 const withVersionHead = require('./with-version-head');
@@ -59,8 +60,19 @@ const publish = wrapMultiPlugin(
   pluginDefinitions.publish.default
 );
 
+// Async version of Ramda's `tap`
+const tapA = fn => async x => {
+  await fn(x);
+  return x;
+};
+
 module.exports = {
-  analyzeCommits,
+  analyzeCommits: composeP(
+    // If `analyzeCommits` didn't return a new version, `semantic-release` exits.
+    // Write to the "last-run" file to avoid parsing these same commits again.
+    tapA(unless(Boolean, writeLastRunHead)),
+    analyzeCommits
+  ),
   generateNotes,
   getLastRelease,
   publish,

@@ -1,8 +1,8 @@
+const { readLastRunHead } = require('./last-run-file');
 const { curryN, isEmpty, pipeP, tap, unless, when } = require('ramda');
-
 const debug = require('debug')('semantic-release:monorepo');
 const gitTag = require('./version-to-git-tag');
-const { getTagHead, fetchTags, unshallow } = require('./git-utils');
+const { getTagHead, fetchTags, unshallow, isAncestor } = require('./git-utils');
 
 const debugTap = message => tap(curryN(2, debug)(message));
 const whenIsEmpty = when(isEmpty);
@@ -53,9 +53,15 @@ const withVersionHead = plugin => async (pluginConfig, config) => {
   const release = await plugin(pluginConfig, config);
 
   if (release) {
+    const monorepoTag = await readLastRunHead();
+    const versionTag = await findTagHead(await gitTag(release.version));
+    const gitHead = (await isAncestor(versionTag, monorepoTag))
+      ? monorepoTag
+      : versionTag;
+
     return {
       ...release,
-      gitHead: await findTagHead(await gitTag(release.version)),
+      gitHead,
     };
   }
 };
