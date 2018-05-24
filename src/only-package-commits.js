@@ -12,13 +12,21 @@ const memoizedGetCommitFiles = memoizeWith(identity, getCommitFiles);
  * Get the normalized PACKAGE root path, relative to the git PROJECT root.
  */
 const getPackagePath = async () => {
-  const packagePath = await pkgUp();
+  const absolutePackagePath = await pkgUp();
   const gitRoot = await getRoot();
-  
-  return path.relative(
+
+  const packagePath = path.relative(
     gitRoot,
-    path.resolve(packagePath, '..')
+    path.resolve(absolutePackagePath, '..')
   );
+
+  // Assumes all packages are stored in the same directory.
+  const packagesPath = path.relative(
+    gitRoot,
+    path.resolve(absolutePackagePath, '../../')
+  );
+
+  return { packagePath, packagesPath };
 };
 
 const withFiles = async commits => {
@@ -30,8 +38,8 @@ const withFiles = async commits => {
   );
 };
 
-const onlyPackageCommits = async commits => {
-  const packagePath = await getPackagePath();
+const onlyPackageCommits = async (commits, includeComplementaryCommits) => {
+  const { packagePath, packagesPath } = await getPackagePath();
   debug('Filter commits by package path: "%s"', packagePath);
   const commitsWithFiles = await withFiles(commits);
   // Convert package root path into segments - one for each folder
@@ -40,23 +48,40 @@ const onlyPackageCommits = async commits => {
   return commitsWithFiles.filter(({ files, subject }) => {
     // Normalise paths and check if any changed files' path segments start
     // with that of the package root.
-    const packageFile = files
-      .find(file => {
-        const fileSegments = path.normalize(file).split(path.sep);
-        // Check the file is a *direct* descendent of the package folder (or the folder itself)
-        return packageSegments
-          .every((packageSegment, i) => packageSegment === fileSegments[i])
-      });
+    let isPackageFile;
+    let isComplementaryFile;
+    const file = files.find(file => {
+      const fileSegments = path.normalize(file).split(path.sep);
+      // Check the file is a *direct* descendent of the package folder (or the folder itself)
+      isPackageFile = packageSegments.every(
+        (packageSegment, i) => packageSegment === fileSegments[i]
+      );
+      // Check if the file is a complementary file.
+      // This is defined as a file that is outside the "packages" directory.
+      isComplementaryFile =
+        fileSegments[0] === packagesPath ? isPackageFile : true;
+      return isPackageFile || isComplementaryFile;
+    });
 
-    if (packageFile) {
+    if (isPackageFile) {
       debug(
         'Including commit "%s" because it modified package file "%s".',
         subject,
-        packageFile
+        file
       );
+      return true;
     }
 
-    return !!packageFile;
+    if (includeComplementaryCommits && isComplementaryFile) {
+      debug(
+        'Including commit "%s" because it modified complementary package file "%s".',
+        subject,
+        file
+      );
+      return true;
+    }
+
+    return false;
   });
 };
 
@@ -78,11 +103,11 @@ const logFilteredCommitCount = logger => async ({ commits }) => {
 
 const withOnlyPackageCommits = plugin => async (pluginConfig, config) => {
   const { logger } = config;
-
+  const { includeComplementaryCommits } = pluginConfig.monorepo || {};
   return plugin(
     pluginConfig,
     await pipeP(
-      mapCommits(onlyPackageCommits),
+      mapCommits(onlyPackageCommits, includeComplementaryCommits),
       tapA(logFilteredCommitCount(logger))
     )(config)
   );

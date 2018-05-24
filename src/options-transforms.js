@@ -5,7 +5,11 @@ const commits = lensProp('commits');
 const nextRelease = lensProp('nextRelease');
 const version = lensProp('version');
 
-const mapCommits = fn => overA(commits, async commits => await fn(commits));
+const mapCommits = (fn, includeComplimentaryCommits) =>
+  overA(
+    commits,
+    async commits => await fn(commits, includeComplimentaryCommits)
+  );
 
 const mapNextReleaseVersion = overA(compose(nextRelease, version));
 
