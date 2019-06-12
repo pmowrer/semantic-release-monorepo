@@ -4793,6 +4793,13 @@ semantic-release-plugin-decorators@^1.2.1:
     import-from "^2.1.0"
     lodash "^4.17.4"
 
+"semantic-release-plugin-decorators@https://github.com/ZakSingh/semantic-release-plugin-decorators.git":
+  version "0.0.0-development"
+  resolved "https://github.com/ZakSingh/semantic-release-plugin-decorators.git#2ba7c1819a4814086d985e0027c6b048f5043433"
+  dependencies:
+    import-from "^2.1.0"
+    lodash "^4.17.4"
+
 semantic-release@^15.0.0:
   version "15.9.12"
   resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-15.9.12.tgz#7a6321ac2765a804165d05e3a5b1cdc2628aef59"
