@@ -16,14 +16,14 @@ const {
 
 const NAMESPACE = 'monorepo';
 
-const analyzeCommits = wrapPlugin(
+const analyzeCommits = wrapMultiPlugin(
   NAMESPACE,
   'analyzeCommits',
   compose(logPluginVersion('analyzeCommits'), withOnlyPackageCommits),
   pluginDefinitions.analyzeCommits.default
 );
 
-const generateNotes = wrapMultiPlugin(
+const generateNotes = wrapPlugin(
   NAMESPACE,
   'generateNotes',
   compose(
