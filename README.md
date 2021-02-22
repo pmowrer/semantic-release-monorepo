@@ -26,7 +26,7 @@ npm install -D semantic-release semantic-release-monorepo
 
 ## Usage
 
-Run `semantic-release` in the **root of a monorepo package** and apply `semantic-release-monorepo` via the [`extends`](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends) option.
+Run `semantic-release` in an **individual monorepo package** and apply `semantic-release-monorepo` via the [`extends`](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends) option.
 
 On the command line:
 ```bash
@@ -48,6 +48,12 @@ NOTE: This library **CAN'T** be applied via the `plugins` option.
     "semantic-release-monorepo" // This WON'T work
   ]
 }
+```
+
+### With Yarn Workspaces
+
+```bash
+$ yarn workspaces run semantic-release -e semantic-release-monorepo
 ```
 
 ### With Lerna
