@@ -33,7 +33,7 @@ Run `semantic-release` in an **individual monorepo package** and apply `semantic
 On the command line:
 
 ```bash
-$ npm run semantic-release -e semantic-release-monorepo
+$ npx semantic-release -e semantic-release-monorepo
 ```
 
 Or in the [release config](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file):
