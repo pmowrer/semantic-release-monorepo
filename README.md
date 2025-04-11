@@ -1,6 +1,9 @@
 # semantic-release-monorepo
 
-![Tests workflow](https://github.com/pmowrer/semantic-release-monorepo/actions/workflows/tests.yml/badge.svg) [![npm](https://img.shields.io/npm/v/semantic-release-monorepo.svg)](https://www.npmjs.com/package/semantic-release-monorepo) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Test Status](https://img.shields.io/github/actions/workflow/status/pmowrer/semantic-release-monorepo/release.yml?label=ci/cd)](https://github.com/pmowrer/semantic-release-monorepo/blob/master/.github/workflows/release.yml)
+[![Downloads Count](https://img.shields.io/npm/dm/semantic-release-monorepo.svg)](https://www.npmjs.com/package/semantic-release-monorepo)
+[![NPM Latest Version](https://img.shields.io/npm/v/semantic-release-monorepo)](https://www.npmjs.com/package/semantic-release-monorepo)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://www.npmjs.com/package/semantic-release)
 
 Apply [`semantic-release`'s](https://github.com/semantic-release/semantic-release) automatic publishing to a monorepo.
 
