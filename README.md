@@ -2,7 +2,7 @@
 
 ![Tests workflow](https://github.com/pmowrer/semantic-release-monorepo/actions/workflows/tests.yml/badge.svg) [![npm](https://img.shields.io/npm/v/semantic-release-monorepo.svg)](https://www.npmjs.com/package/semantic-release-monorepo) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-Apply [`semantic-release`'s](https://github.com/semantic-release/semantic-release) automatic publishing to a monorepo.
+Apply [`semantic-release`](https://www.npmjs.com/package/semantic-release)'s automatic publishing to a monorepo.
 
 ## Why
 
@@ -89,7 +89,7 @@ This library modifies the `context` object passed to `semantic-release` plugins 
 
 ### tagFormat
 
-Pre-configures the [`tagFormat` option](https://github.com/semantic-release/semantic-release/blob/caribou/docs/usage/configuration.md#tagformat) to use the [monorepo git tag format](#how).
+Pre-configures the [`tagFormat` option](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat) to use the [monorepo git tag format](#how).
 
 If you are using Lerna, you can customize the format using the following command:
 
