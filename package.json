@@ -29,7 +29,7 @@
     "ramda": "^0.27.2",
     "read-pkg": "^5.2.0",
     "semantic-release-plugin-decorators": "^4.0.0",
-    "tempy": "1.0.1"
+    "tempy": "^3.2.0"
   },
   "devDependencies": {
     "husky": "^8.0.1",
